@@ -1,14 +1,6 @@
 repos:
   - repo: local
     hooks:
-      - id: backend-ruff-check
-        name: Backend Ruff lint (Python)
-        entry: bash -c 'cd backend && uv run ruff check .'
-        language: system
-        pass_filenames: false
-        always_run: true
-        stages: [ pre-commit, pre-push, manual ]
-        verbose: true
       - id: backend-pre-commit
         name: Run backend pre-commit hooks
         entry: bash -c 'cd backend && uv run pre-commit run --all-files --config=.pre-commit-config.yaml'
