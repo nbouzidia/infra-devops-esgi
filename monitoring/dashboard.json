@@ -1,19 +1,96 @@
 {
+  "id": null,
   "annotations": {"list": []},
   "panels": [
     {
-      "type": "graph",
-      "title": "HTTP requests total",
+      "type": "stat",
+      "title": "Total Requests (last hour)",
       "targets": [
         {
-          "expr": "meteo_http_requests_total",
-          "refId": "A"
+          "expr": "increase(http_requests_total[1h])",
+          "refId": "A",
+          "legendFormat": "{{method}} {{endpoint}}"
         }
       ],
-      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 0}
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
+      "options": {"colorMode": "value", "graphMode": "area"}
+    },
+    {
+      "type": "stat",
+      "title": "Requests/sec (now)",
+      "targets": [
+        {
+          "expr": "rate(http_requests_total[1m])",
+          "refId": "A",
+          "legendFormat": "{{method}} {{endpoint}}"
+        }
+      ],
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0},
+      "options": {"colorMode": "value", "graphMode": "area"}
+    },
+    {
+      "type": "graph",
+      "title": "Request Rate (5-min)",
+      "targets": [
+        {
+          "expr": "rate(http_requests_total[5m])",
+          "refId": "A",
+          "legendFormat": "{{method}} {{endpoint}}"
+        }
+      ],
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8}
+    },
+    {
+      "type": "graph",
+      "title": "HTTP Request Duration (p50, p95, p99)",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.50, rate(http_request_duration_seconds_bucket[5m]))",
+          "refId": "A",
+          "legendFormat": "p50 {{method}} {{endpoint}}"
+        },
+        {
+          "expr": "histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m]))",
+          "refId": "B",
+          "legendFormat": "p95 {{method}} {{endpoint}}"
+        },
+        {
+          "expr": "histogram_quantile(0.99, rate(http_request_duration_seconds_bucket[5m]))",
+          "refId": "C",
+          "legendFormat": "p99 {{method}} {{endpoint}}"
+        }
+      ],
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8}
+    },
+    {
+      "type": "stat",
+      "title": "Errors (5xx)",
+      "targets": [
+        {
+          "expr": "increase(http_requests_total{status=~\"5..\"}[1h])",
+          "refId": "A",
+          "legendFormat": "{{method}} {{endpoint}}"
+        }
+      ],
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 16},
+      "options": {"colorMode": "value", "thresholds": {"mode": "absolute", "steps": [{"color": "green", "value": null}, {"color": "red", "value": 1}]}}
+    },
+    {
+      "type": "stat",
+      "title": "Client Errors (4xx)",
+      "targets": [
+        {
+          "expr": "increase(http_requests_total{status=~\"4..\"}[1h])",
+          "refId": "A",
+          "legendFormat": "{{method}} {{endpoint}}"
+        }
+      ],
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 16},
+      "options": {"colorMode": "value"}
     }
   ],
   "schemaVersion": 27,
-  "version": 1,
-  "title": "Meteo Metrics"
+  "version": 2,
+  "title": "Meteo API Metrics",
+  "refresh": "5s"
 }

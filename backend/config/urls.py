@@ -12,11 +12,9 @@ from drf_spectacular.views import (
 from weather import metrics as weather_metrics
 
 urlpatterns = [
-    # Admin
+
     path("admin/", admin.site.urls),
-    # API v1
     path("api/v1/", include("weather.urls")),
-    # OpenAPI schema and documentation
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path(
         "api/docs/",
@@ -28,6 +26,5 @@ urlpatterns = [
         SpectacularRedocView.as_view(url_name="schema"),
         name="redoc",
     ),
-    # Prometheus metrics
     path("metrics/", weather_metrics.metrics_view),
 ]
