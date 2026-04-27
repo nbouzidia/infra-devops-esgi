@@ -9,6 +9,7 @@ from drf_spectacular.views import (
     SpectacularRedocView,
     SpectacularSwaggerView,
 )
+from weather import metrics as weather_metrics
 
 urlpatterns = [
     # Admin
@@ -27,4 +28,6 @@ urlpatterns = [
         SpectacularRedocView.as_view(url_name="schema"),
         name="redoc",
     ),
+    # Prometheus metrics
+    path("metrics/", weather_metrics.metrics_view),
 ]

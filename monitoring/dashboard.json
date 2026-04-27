@@ -1,0 +1,19 @@
+{
+  "annotations": {"list": []},
+  "panels": [
+    {
+      "type": "graph",
+      "title": "HTTP requests total",
+      "targets": [
+        {
+          "expr": "meteo_http_requests_total",
+          "refId": "A"
+        }
+      ],
+      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 0}
+    }
+  ],
+  "schemaVersion": 27,
+  "version": 1,
+  "title": "Meteo Metrics"
+}
